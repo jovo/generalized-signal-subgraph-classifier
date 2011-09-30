@@ -1,0 +1,75 @@
+\documentclass[12pt]{report} \usepackage[left=1.5in, right=1in,
+top=1in,
+bottom=1in]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper} % ... or a4paper or a5paper or ...
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage[sort]{natbib}
+\include{commands}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{forloop}
+%\graphicspath{{./results/}}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+%\changedate{month}{day}{year} changes the LaTeX date
+
+%\setcounter{secnumdepth}{-1}
+%\setcounter{chapter}{-1}
+% Change the \today command to show the day of the week
+
+\newcommand{\monthname}[1]{%
+\ifcase#1
+\or January%
+\or February%
+\or March%
+\or April%
+\or May%
+\or June%
+\or July%
+\or August%
+\or September%
+\or October%
+\or November%
+\or December%
+\fi}
+
+\renewcommand{\today}{%
+\monthname{\month}, \number\year}
+\newfont{\ttiny}{cmr10 at 6pt}
+
+\newcommand{\de}{$\delta$}
+
+
+
+\begin{document}
+
+% \changedate{month}{day}{year}
+
+\title{\bf{\large{Signal Subgraph Classifier with Multiple Groups}}}
+\author{by \\
+  JM, JV}
+%\date{}                                           % Activate to display a given date or no date
+
+\section{Multiple groups}
+In order to estimate
+
+\bea
+P(Y = y_{i} | G = g) &=& \frac{P(G=g | Y = y_{i}) P(Y = y_{i})}{\sum_{j=1}^{k} P(G=g | Y = y_{j}) P(Y = y_{j})}\\
+P(G=g | Y = y_{i}) P(Y = y_{i}) &=& 
+\eea
+
+So for n groups, we can use the binomial distribution still to estimate $P(G=g | Y = y_{i})$.  For non-binary outcomes, let's say the groups are ``categorical'', ie (-1, 0, 1) for negatively connected, not connected, positively connected.  Then we need to use the multinomial distribution.  Thus, we may want to use the generalization of the binomial classifier to the ``categorical'' classifier.  
+
+
+
+\end{document}  
+
+
+
+
