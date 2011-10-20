@@ -1,6 +1,5 @@
-\documentclass[12pt]{report} \usepackage[left=1.5in, right=1in,
-top=1in,
-bottom=1in]{geometry} % See geometry.pdf to learn the layout options. There are lots.
+\documentclass[12pt]{amsart} 
+\usepackage{geometry} % See geometry.pdf to learn the layout options. There are lots.
 \geometry{letterpaper} % ... or a4paper or a5paper or ...
 %\geometry{landscape}                % Activate for for rotated page geometry
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
@@ -14,6 +13,7 @@ bottom=1in]{geometry} % See geometry.pdf to learn the layout options. There are 
 \usepackage{float}
 \usepackage{setspace}
 \usepackage{forloop}
+\usepackage{hyperref}
 %\graphicspath{{./results/}}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
@@ -56,17 +56,109 @@ bottom=1in]{geometry} % See geometry.pdf to learn the layout options. There are 
   JM, JV}
 %\date{}                                           % Activate to display a given date or no date
 
+\section{Scope}
+The purpose of this manuscript is to extend the ``Graph Classiﬁcation using Signal Subgraphs'' by Vogelstein et al. (Need bibtex reference) to $n$ groups, weighted or categorical edges with more than 2 categories, and a covariate-adjusted classifier.  
 \section{Multiple groups}
-In order to estimate
+Although ``Graph Classiﬁcation using Signal Subgraphs'' dealt specifically with 2 groups, which is a common application, it is trivial to extend this method to $n$ groups, as Fisher's exact test and $\chi^2$ tests are implemented for $n$ groups and a binary classifier.  The only change is now we calculate this separately for each group $P(\mathbb{G}=G | Y = y_{i})  = \prod\limits_{u, v \in g}   p_{uv|y_{i}}^{a_{u,v}} (1-p_{uv|y_{i}})^{(1-a_{u,v})} $.
+
+\section{Outline}
+Talk about moving into weighted signal subgraphs.
+
+\section{Weighted/Categorical Classifier}
+\subsection{Estimation of Statistics for Edge Discrimination}
+In order to estimate the signal subgraph or weight edges in classification of a group, we need test statistics on the edges that discriminate the groups to be classified.   For categorical or ordered edge values, Fisher's exact test (\textbf{fisher.test}) and $\chi^2$ (\textbf{chisq.test}) tests will suffice.  The problem exists when the computation of Fisher's exact test is too intense, and each cell of the category by group table does not have a count $\geq 5$.  This will usually happen if there are a large number of groups or large number of edge categories, or both.  The extreme example of this is when there are continuous edge weights.  In both cases, the following describe some intuitive nonparametric and parametric tests to determine the signal subgraph. 
+
+
+\subsubsection{Non-Parametric Tests }
+In order to determine test statistics for edges, one should do some exploratory data analysis (EDA) to determine what parameters of the distribution should be tested upon.  For example, if looking at the distribution of values at each edge across groups, and the mean and median appear similar, but the variances appear different across groups, one would not want to do a test of means.  Also, one can compare the rank of discrimination across edges across tests.  
+
+
+For ordered data, the extension of the Mann-Whitney U/Rank-sum test, the Kruskal-Wallis (K-W) test can provide $\chi^{2}$ statistics and p-values for the ability of an edge to discriminate groups due to difference in medians.  This defaults to the rank-sum test when the number of groups are two.  The advantages of this approach is that no parametric model is assumed, it is robust and does not lose much efficiency over t-tests even when the data is normal, and is easily implemented.  \textbf{kruskal.test}
+
+In order to test difference of variances, variance ratio tests such as Levene's test and the Brown–Forsythe test will allow comparison of group variances,  \citep{levene, brown}.  \textbf{levene.test}
+%One also can use k-group analogues to the Kolmogorov-Smirnov Test \citep{kkolsmir} as another non-parametric alternative for testing of edge discrimination.  
+
+\subsubsection{Parametric/Model Approaches}
+Extending to parametric models, one can use a basic ANOVA to get an F statistic, and subsequently a p-value.  Although this is useful, the K-W test does not have these assumptions, and results can be greatly skewed if the data is not normally distributed.  
+
+In general, this method can be expanded to any generalized linear model (GLM) depending on the type of edge weights are given.  For example, if the data is a correlation matrix, one can use the transformation $\tilde{x} = \frac{x+1}{2}$ so that the data $\in [0, 1]$ and a GLM with a beta distribution can be used.  If the data were ranks, one may use do Poisson or negative binomial regression.  This can be extrapolated to all data that GLMs can model, which is a large set of data.  Using likelihood-ratio tests (LR), the group indicator coefficients can be tested and a test statistic and p-value can be used to rank edge discrimination.  
+
+With the growth of many machine learning algorithms for discrimination, using these methods may prove more useful than GLMs to rank edges.  Recursive partitioning \citep{rpart}, random forests \citep{randomForest}, and other machine learning algorithms have measures of importance other than $\beta$ coefficients and p-values, and can be used to determine the signal subgraph.  If one decides to use inverse p-value weighting (discussed later), one may be able to use a transformation such as $p_{r} = \frac{r_{i}}{\sum\limits_{i=1}^{P} r_{i}}$, where $r_{i}$ is the importance measure of edge $i$ of the $P$ edges.  
+
+Using some parametric models may be a bit more desirable/wanted, especially if there are a large number of ties within the data.  For example, let's say we have edges that have values, 0, 1, 2, where 0 is not connected, 1 is connected (weak) and 2 is connected (strong).  One could use the Poisson distribution in a GLM and do the model $G\sim Gr$ where Gr is the group indicator and G is the graph edge.  A likelihood ratio test could then get one p-value for how well these groups predict the edge.  
+
+\section{Generalized Linear Model (GLM) graph classifier}
+Let's give a couple examples of how we can use GLMs to estimate the probability for an edge.  Here's how the procedure would go.  Specify a family/distribution, use either Kruskal-Wallis or family to determine signal subgraph, then use the family/distribution to get a probability under that distribution.  
+
+\subsection{randomForest}
+Using a machine learning algorithm, you can do regression type analyses or classification for discrete outcomes.  This is similar to GLM but you do not need to specify a family.
+
+\section{Estimation of $P(\mathbb{G}=G | Y = y_{i}, X)$, probability of an edge}
+\subsection{Nonparametric}
+\subsubsection{Signal Subgraph (model/estimation at each node)}
+\paragraph{Bernoulli/Multinomial}
+\bea
+P(Y = y_{i} | G = g) &=& \frac{P(\mathbb{G}=G | Y = y_{i}) P(Y = y_{i})}{\sum\limits_{j=1}^{k} P(\mathbb{G}=G | Y = y_{j}) P(Y = y_{j})}\\
+P(\mathbb{G}=G | Y = y_{i}) P(Y = y_{i}) &=& \prod\limits_{u, v \in g}   p_{uv|y}^{a_{u,v}} (1-p_{uv|y})^{(1-a_{u,v})} \pi_{y_{i}}
+\eea
+where $\pi_{y_{i}} = P(Y = y_{i}) $, and $k$ is total possible number of groups and $u, v$ are indices in the graph.  Signal subgraph classifier uses 
+\bea
+P(\mathbb{G}=G | Y = y_{i}) P(Y = y_{i}) &=& \prod_{u, v \in \mathcal{S}}   p_{uv|y}^{a_{u,v}} (1-p_{uv|y})^{(1-a_{u,v})} \pi_{y_{i}}
+\eea
+So for n groups, we can use the binomial distribution still to estimate $P(\mathbb{G}=G | Y = y_{i})$.  For non-binary outcomes, let's say the groups are ``categorical'', ie (-1, 0, 1) for negatively connected, not connected, positively connected, then we need to use the multinomial distribution.  Thus, we may want to use the generalization of the binomial classifier to the ``categorical'' classifier.  
 
 \bea
-P(Y = y_{i} | G = g) &=& \frac{P(G=g | Y = y_{i}) P(Y = y_{i})}{\sum_{j=1}^{k} P(G=g | Y = y_{j}) P(Y = y_{j})}\\
-P(G=g | Y = y_{i}) P(Y = y_{i}) &=& 
+P(\mathbb{G}=G | Y = y_{i}) P(Y = y_{i}) &=& \prod_{u, v \in \mathcal{S}}  \left(p_{u_{1}v_{1}|y}^{a_{u,v,1}} p_{u_{2}v_{2}|y}^{a_{u,v,2}} \cdots p_{u_{c}v_{c}|y}^{a_{u,v,c}}\right) \pi_{y_{i}}
+\eea
+where $c$ is the number of categories and 
+\beas
+a_{u, v, i} &=&  \begin{cases} 1  & \text{if $a_{u, v} = c_{i}$} \\
+0 & \text{ otherwise}
+ \end{cases}\\
+ \eeas and $c_{i}$ is case.  \textbf{Problem} - need some sort of numerical perturbation (ie if 0\% of people in group A have an edge here, then maybe use 0.001), so not to make the classifier a probability 0 for this group.  Josh had this in his paper, which I think works well
+ 
+ 
+ \beas
+\hat{p}_{u, v|y} &=&  \begin{cases} \eta_{n}  & \text{if $a_{u, v} = c_{i}$} \\
+1- \eta_{n} & \text{if $\max_{i} a_{uv}^{(i)} = 0$} \\
+\hat{p}_{u, v|y}^{MLE} & \text{ otherwise}
+ \end{cases}\\
+\eeas
+where $\eta = \frac{1}{10n}$.
+
+
+\subsection{randomForest}
+Using a machine learning algorithm, you can do regression type analyses or classification for discrete outcomes.  This is similar to GLM but you do not need to specify a family.
+
+\subsubsection{Whole Graph}
+\paragraph{Weight using p-values}
+Instead of using a derived cutoff for the number/percent of edges for the signal subgraph, the entire graph can be used, inverse weighting using p-values.  By ``inverse'', denoted by $f(x)$ can take different forms, $1-x$, $\frac{1}{x,}$, $\frac{1}{\sqrt{x}}$, etc.  
+
+\bea
+P(\mathbb{G}=G | Y = y_{i}) &=& \prod\limits_{u, v \in g} f(x)   p_{uv|y}^{a_{u,v}} (1-p_{uv|y})^{(1-a_{u,v})} \pi_{y_{i}}
 \eea
 
-So for n groups, we can use the binomial distribution still to estimate $P(G=g | Y = y_{i})$.  For non-binary outcomes, let's say the groups are ``categorical'', ie (-1, 0, 1) for negatively connected, not connected, positively connected.  Then we need to use the multinomial distribution.  Thus, we may want to use the generalization of the binomial classifier to the ``categorical'' classifier.  
+If not weighting using p-values, then just a dimension reduction approach using Fisher's exact test.
+
+\subsection{GLM/Model Based: Covariate Adjusted}
+\paragraph{Categorical}
+The same argument can be used for signal subgraph and weighted using p-values.  
+\bea
+P(Y = y_{i} | G = g, X) &=& \frac{P(\mathbb{G}=G | Y = y_{i}, X) P(Y = y_{i} | X)}{\sum\limits_{j=1}^{k} P(\mathbb{G}=G | Y = y_{j}, X) P(Y = y_{j} | X)}\\
+P(\mathbb{G}=G | Y = y_{i}, X) P(Y = y_{i} | X) &=& P(\mathbb{G}=G | Y = y_{i}, X) \hat{\pi}_{y|X}
+\eea
+$P(\mathbb{G}=G | Y = y_{i}, X)$ can be estimated using a GLM or a machine learning algorithm.  $P(Y = y_{i} | X)$ can also be, in the same way (but different model most likely), using multinomial/logistic/any classification.  The only caveat is that X should be the same (I think), for it to be a true Bayesian estimator.  
+
+\paragraph{Regression}
+$P(\mathbb{G}=G | Y = y_{i}, X)$ probably need to be given by  fitting separate models for each group and using the predictions from the separate models.  
 
 
+\section{Future work}
+Use GEE/mixed effects models to estimate the covariance matrix of the graph.  For correlation matrices (say fMRI), this would be the spatial covariance of the temporal correlation between voxels.  
+
+
+\bibliographystyle{apalike}
+\bibliography{extension}
 
 \end{document}  
 
