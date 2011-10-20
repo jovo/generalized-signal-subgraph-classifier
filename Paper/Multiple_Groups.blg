@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: Multiple_Groups.aux
+The style file: apalike.bst
+Database file #1: extension.bib
+You've used 4 entries,
+            1935 wiz_defined-function locations,
+            498 strings with 4131 characters,
+and the built_in function-call counts, 1481 in all, are:
+= -- 152
+> -- 34
+< -- 5
++ -- 10
+- -- 10
+* -- 107
+:= -- 253
+add.period$ -- 12
+call.type$ -- 4
+change.case$ -- 24
+chr.to.int$ -- 4
+cite$ -- 4
+duplicate$ -- 65
+empty$ -- 115
+format.name$ -- 16
+if$ -- 298
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 5
+newline$ -- 23
+num.names$ -- 12
+pop$ -- 20
+preamble$ -- 1
+purify$ -- 25
+quote$ -- 0
+skip$ -- 56
+stack$ -- 0
+substring$ -- 121
+swap$ -- 13
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 22
+warning$ -- 0
+while$ -- 15
+width$ -- 0
+write$ -- 53

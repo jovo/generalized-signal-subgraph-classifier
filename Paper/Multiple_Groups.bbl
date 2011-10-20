@@ -1,0 +1,24 @@
+\begin{thebibliography}{}
+
+\bibitem[Breiman, 1984]{rpart}
+Breiman, L. (1984).
+\newblock {\em Classification and regression trees}.
+\newblock Chapman \& Hall/CRC.
+
+\bibitem[Breiman, 2001]{randomForest}
+Breiman, L. (2001).
+\newblock Random forests.
+\newblock {\em Machine learning}, 45(1):5--32.
+
+\bibitem[Brown and Forsythe, 1974]{brown}
+Brown, M. and Forsythe, A. (1974).
+\newblock Robust tests for the equality of variances.
+\newblock {\em Journal of the American Statistical Association}, pages
+  364--367.
+
+\bibitem[Levene, 1960]{levene}
+Levene, H. (1960).
+\newblock Robust tests for equality of variances.
+\newblock {\em Contributions to probability and statistics}, 1:278--292.
+
+\end{thebibliography}

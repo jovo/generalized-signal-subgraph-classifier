@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\usepackage{fancybox}
+\usepackage{tikz}
+
+\begin{document}
+\pagestyle{empty}
+% Define block styles
+
+
+
+\ovalbox{
+\begin{tikzpicture}[level/.style={sibling distance=20cm, level distance=10cm}]
+\node (z) {\textbf{Signal Subgraph}}
+  child {node (a) {\textbf{Estimation of p-value for edges for signal subgraph} }
+    child {node (b) {Binary / Categorical}
+      child {node {Parametric (P)}
+        child {node (d) {Fisher's Exact Test}}
+      } 
+      child {node (q2){Non-Parametric (NP)}
+      	child {node (q3) {$\chi^2$}}
+	}
+    }
+    child {node (g) {Weighted}
+      child {node {Parametric}
+      	child {node {ANOVA}}
+      	}
+      child {node {NP}
+      	child {node {Kruskal-Wallis Test}}
+	}
+    }
+  }
+  child {node  (j) {\textbf{Calculate probability of an edge}}
+    child {node (k) {Non-Parametric}
+      child {node {$\vdots$}}
+      child {node {$\vdots$}}
+    }
+  child {node (l) {GLMs}}
+  child  {node (v) {blah}}
+  };
+%};
+%  child {node (aa2) {Machine Learning}}
+  
+%\path (a) -- (j) node [midway] {+};
+%\path (b) -- (g) node [midway] {+};
+%\path (k) -- (l) node [midway] {+};
+%\path (k) -- (g) node [midway] {+};
+%\path (d) -- (e) node [midway] {+};
+%\path (o) -- (p) node [midway] {+};
+%\path (o) -- (e) node (x) [midway] {$\cdots$}
+%  child [grow=down] {
+%    node (y) {$O\left(\displaystyle\sum_{i = 0}^k 2^i \cdot \frac{n}{2^i}\right)$}
+%    edge from parent[draw=none]
+%  };
+%\path (q) -- (r) node [midway] {+};
+%\path (s) -- (r) node [midway] {+};
+%\path (s) -- (t) node [midway] {+};
+%\path (s) -- (l) node [midway] {=};
+%\path (t) -- (u) node [midway] {+};
+%\path (z) -- (u) node [midway] {=};
+%\path (j) -- (t) node [midway] {=};
+%\path (y) -- (x) node [midway] {$\Downarrow$};
+%\path (v) -- (y)
+%  node (w) [midway] {$O\left(\displaystyle\sum_{i = 0}^k n\right) = O(k \cdot n)$};
+%\path (q) -- (v) node [midway] {=};
+%\path (e) -- (x) node [midway] {+};
+%\path (o) -- (x) node [midway] {+};
+%\path (y) -- (w) node [midway] {$=$};
+%\path (v) -- (w) node [midway] {$\Leftrightarrow$};
+%\path (r) -- (c) node [midway] {$\cdots$};
+\end{tikzpicture}}
+\tikzstyle{bblock} = [rectangle, draw, text width=14em, text centered, minimum height=5em]
+\tikzstyle{line} = [draw]
+\tikzstyle{block} = [rectangle, draw, text width=6em, text centered, minimum height=2em]    
+
+\begin{tikzpicture}[node distance = 2.5cm, auto]
+% Place nodes
+\node [bblock] (top) {\textbf{Graph Classifier}};
+\node [bblock, below of=top, left of=top, node distance = 9cm] (pval) {\textbf{Estimation of p-value for edges for signal subgraph} };
+\node [bblock, below of=top, right of=top, node distance =9cm] (prob) {\textbf{Calculate probability of an edge}};
+\node [block, below of=pval, left of=pval, node distance =4cm] (pbin) {Binary / Categorical};
+\node [block, right of=pbin, node distance =8cm] (pw) {Weighted};
+\node [block, below of=pbin, left of=pbin] (ppbin) {Parametric (P)};
+\node [block, right of=ppbin, node distance=4cm] (nppbin) {Non-Parametric (NP)};
+\node [block, below of=pw, left of= pw] (ppw) {P};
+\node [block, right of=ppw, node distance=4cm] (nppw) {NP};
+\node [block, below of=ppbin] (pchi2) {$\chi^2$};
+\node [block, below of=nppbin] (pfish) {Fisher's Exact Test};
+\node [block, below of=ppw] (panova) {ANOVA};
+\node [block, below of=nppw] (pkw) {Kruskal-Wallis Test};
+
+\node [block, below of=prob, right of=prob, node distance=4cm] (prc) {GLMs};
+\node [block, left of=prc, node distance=8.5cm] (prb) {Non-Parametric};
+
+\node [block, below of=prb, left of=prb, node distance =2cm] (prss) {Signal Subgraph (do at each node)};
+\node [block, right of=prss, node distance = 4cm] (prws) {Whole Graph};
+\node [block, below of=prss, left of=prss, node distance =2cm] (prssb) {Binomial / Mutlinomial};
+\node [block, below of=prws, left of=prws, node distance =2cm] (prww) {(1-pval) Weight edges};
+\node [block, right of=prww, node distance=4cm] (prwdr) {Dimension reduction};
+
+\node [block, below of=prc, left of=prc, node distance =2cm] (prcs1) {Signal Subgraph (do at each node)};
+\node [block, right of=prcs1, node distance = 4cm] (prws1) {Whole Graph (one model)};
+
+\node [block, below of=prws1, node distance=2cm] (prwdr) {Dimension reduction, but still can adjust};
+
+\node [block, below of=prcs1, node distance =3cm] (prcs) {(Pois / Norm / Exp / ...) or (Random Forest / SVM / KNN / ...) };
+\node [block, below of=prcs, node distance = 3cm] (prcws) {Can use covariate adjustment};
+
+%\node [block, right of=prww] (prbm) {Multinomial Distribution (Multicat)};
+%\node [block, right of=prbm] (prbb) {Bernoulli Distribution (Binary)};
+%\node [block, right of=prbm] (prbm) {};
+%\node [block, right of=prbm] (prcm) {Multinomial Distribution};
+%\node [block, right of=prcm] (prdm) {Pois/Norm/Exp};
+
+
+%\node [block, left of=90day] (30day) {\textbf{30 Day Follow-Up} (n= 136)};
+%\node [block, right of=180day] (270day) {\textbf{270 Day Follow-Up} (n= 62)};
+%\node [block, right of=270day] (365day) {\textbf{365 Day Follow-Up} (n= 38)};
+%\node [below of=30day, node distance = 1cm] (footnote) {\scriptsize Follow-Up occurances are recorded visits of living subjects};
+% Draw edges
+%\path [line] (top) -- (pval);
+%\path [line] (top) -- (prob);
+%\path [line] (top) -- (prob);
+%\path [line] (prob) -- (30day);
+%\path [line] (top) -- (90day);
+%\path [line] (top) -- (180day);
+%\path [line] (top) -- (270day);
+%\path [line] (top) -- (365day);
+\end{tikzpicture}
+\end{document}

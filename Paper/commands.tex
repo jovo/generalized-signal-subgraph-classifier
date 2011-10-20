@@ -1,0 +1,309 @@
+%Exercise
+
+\newcommand{\bexer}{\begin{exercise}}
+\newcommand{\eexer}{\end{exercise}}
+\newcounter{exer}
+\newenvironment{exercise}[1]{\addtocounter{exer}{1}{ \color{red} Exercise \arabic{exer} (#1):}}
+%{~\\ {\color{red}\fbox{End of Exercise}}
+%{~\\ \color{red} $\S$
+{~ \color{red} $\S$
+}
+
+
+
+
+
+% ITEMIZE LABELS
+\def\labelitemi{$\bullet$}
+\def\labelitemii{$\circ$}
+\def\labelitemiii{$\diamond$}
+\def\labelitemiv{$\triangleright$}
+
+\newcommand{\hlight}[1]  {\hl{#1}}
+
+%\renewcommand{\Red}[1]{{\color{red}{#1}}}
+
+\newcommand{\ruleits}{\rule{4.5in}{.01in}}
+\newcommand{\ruleitm}{\rule{4.5in}{.02in}}
+\newcommand{\ruleitblue}{\Blue{\rule{4.5in}{.01in}}}	
+\newcommand{\ruleitb}{{\color{blue} \rule{4.0in}{.01in}}}
+\newcommand{\slabel}[1]{\label{#1}}
+\newcommand{\vlabel}[1]{\label{#1}  \mbox{\textbf{\{{#1}\}}~     }  }
+\newcommand{\ra}{\mbox{$\rightarrow$}}
+\newcommand{\blank}{\thispagestyle{empty}}
+\newcommand{\bt}{\begin{tabbing}}
+\newcommand{\et}{\end{tabbing}}
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beas}{\begin{eqnarray*}}
+\newcommand{\eeas}{\end{eqnarray*}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bquo}{\begin{quote}}
+\newcommand{\equo}{\end{quote}}
+\newcommand{\bdes}{\begin{description}}
+\newcommand{\edes}{\end{description}}
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+
+
+\newcommand{\bbullet}{{\color{blue} \bf \bullet ~}}
+
+\newcommand{\supth}{\mbox{$^{\mbox{th}}$} }
+\newcommand{\st}{\mbox{$^{\mbox{st}}$} }
+\newcommand{\rd}{\mbox{$^{\mbox{rd}}$} }
+\newcommand{\nd}{\mbox{$^{\mbox{nd}}$} }
+\newcommand{\blt}{$\bullet$ }
+
+\newcommand{\Xp}{\bf X^\prime}
+\newcommand{\xp}{\bf x^\prime}
+\newcommand{\cov}{\mbox{cov}}
+\newcommand{\logit}{\mbox{logit}}
+\newcommand{\cor}{\mbox{cor}}
+\newcommand{\expit}{\mbox{expit}}
+\newcommand{\XXn}{X_1, \ldots, X_n}
+\newcommand{\barX}{\bar{X}_n}
+\newcommand{\tausq}{\tau^2}
+\newcommand{\gamsq}{\gamma^2}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\sis}{\sigma^2}
+\newcommand{\del}{\partial}
+\newcommand{\vbar}{\; \rule[-2.5mm]{.2mm}{6mm} \;}
+\newcommand{\bu}{ {\bf u} }
+\newcommand{\bd}{ {\bf d} }
+\newcommand{\bx}{ {\bf x} }
+\newcommand{\bH}{ {\bf H} }
+\newcommand{\bP}{ {\bf P} }
+\newcommand{\bQ}{ {\bf Q} }
+\newcommand{\bX}{ {\bf X} }
+\newcommand{\by}{ {\bf y} }
+\newcommand{\bY}{ {\bf Y} }
+\newcommand{\bU}{ {\bf U} }
+\newcommand{\bW}{ {\bf W} }
+\newcommand{\bA}{ {\bf A} }
+\newcommand{\bB}{ {\bf B} }
+\newcommand{\ba}{ {\bf a} }
+\newcommand{\bw}{ {\bf w} }
+\newcommand{\bV}{ {\bf V} }
+\newcommand{\bv}{ {\bf v} }
+\newcommand{\bI}{ {\bf I} }
+\newcommand{\bD}{ {\bf D} }
+\newcommand{\bN}{{\bf N}}
+\newcommand{\bR}{ {\bf R} }
+\newcommand{\bS}{\boldmath \bf S}
+\newcommand{\bT}{{\bf \boldmath T}}
+\newcommand{\bz}{ {\bf z} }
+\newcommand{\bZ}{ {\bf Z} }
+\newcommand{\bq}{ {\bf q} }
+\newcommand{\bfe}{{\bf e}}
+\newcommand{\bone}{ {\bf 1} }
+\newcommand{\bzero}{ {\bf 0} }
+\newcommand{\bdel}{ \mbox{\boldmath $ \delta $}}
+\newcommand{\bDel}{ \mbox{\boldmath $ \Delta $}}
+\newcommand{\beps}{ \mbox{\boldmath $ \epsilon $}}
+\newcommand{\balph}{ \mbox{\boldmath $\alpha$} }
+\newcommand{\bbet}{ \mbox{\boldmath $ \beta $} }
+\newcommand{\bgam}{ \mbox{\boldmath $\gamma$} }
+\newcommand{\blam}{ \mbox{\boldmath $ \lambda $} }
+\newcommand{\bome}{ \mbox{\boldmath $ \omega $} }
+\newcommand{\brho}{ \mbox{\boldmath $ \rho $} }
+\newcommand{\bthet}{ \mbox{\boldmath $ \theta $} }
+\newcommand{\bpi}{ \mbox{\boldmath $ \pi $} }
+\newcommand{\bpsi}{ \mbox{\boldmath $ \psi $} }
+\newcommand{\btheta}{ \mbox{\boldmath $ \theta $} }
+\newcommand{\bThet}{ \mbox{\boldmath $ \Theta $} }
+\newcommand{\boeta}{ \mbox{\boldmath $\eta$} }
+\newcommand{\bzet}{ \mbox{\boldmath $ \zeta $} }
+\newcommand{\bphi}{ \mbox{\boldmath $ \phi $} }
+\newcommand{\bet}{ \mbox{\boldmath $\eta$} }
+\newcommand{\bnu}{ \mbox{\boldmath $\nu$} }
+\newcommand{\bmu}{ \mbox{\boldmath $\mu$} }
+\newcommand{\bsis}{ \mbox{\boldmath $\sigma^2$} }
+\newcommand{\bSigma}{ \mbox{\boldmath $\Sigma$} }
+\newcommand{\bp}{{\bf \boldmath p}}
+\newcommand{\bxi}{ \mbox{\boldmath $ \xi $} }
+\newcommand{\sige}{\sigma_{e}}
+\newcommand{\siga}{\sigma_{\alpha}}
+\newcommand{\indep}{\perp\:\!\!\!\!\perp }
+\newcommand{\nequiv}{\equiv \!\!\!\!\!\! / \;\,}
+
+\newcommand{\bin}[2]{\left ( \begin{array}{c} {#1} \\ {#2} \end{array} \right )}
+\newcommand{\nn}{\nonumber}
+\newcommand{\bex}{\begin{example} \rm }
+\newcommand{\eex}{\rule{5pt}{5pt} \end{example}}
+\newcommand{\bdf}{\begin{definition} \rm }
+\newcommand{\edf}{\end{definition}}
+\newcommand{\bthm}{\begin{theorem} \rm }
+\newcommand{\ethm}{\end{theorem}}
+\newcommand{\balg}{\begin{algorithm} \rm }
+\newcommand{\ealg}{\end{algorithm}}
+\newcommand{\np}{\newpage}
+\newcommand{\bvb}{\begin{verbatim}}
+\newcommand{\evb}{\end{verbatim}}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}{Lemma}
+\newcommand{\bth}{\begin{theorem}}
+%\newcommand{\eth}{\end{theorem}}
+\newcommand{\blem}{\begin{lemma}}
+\newcommand{\elem}{\end{lemma}}
+\newcommand{\edoc}{\end{document}}
+\newcommand{\bfr}{\begin{flushright}}
+\newcommand{\efr}{\end{flushright}}
+
+\newcommand{\ct}[1]{$^{\cite{#1}}$}
+\newcommand{\nvsex}{\vspace*{-4ex}}
+\newcommand{\nvs}{\vspace*{-.10in}}
+\newcommand{\nvsp}{\vspace*{-.250in}}
+\newcommand{\nvspp}{\vspace*{-.75in}}
+\newcommand{\vsps}{\vspace*{.250in}}
+\newcommand{\vspss}{\vspace*{.1250in}}
+\newcommand{\vsp}{\vspace*{.50in}}
+\newcommand{\vspp}{\vspace*{.75in}}
+\def\cents{\hbox{\rm\rlap/c}}
+
+\newcommand{\estse}[2]{{#1}_{(#2)}}
+\newcommand{\cithree}[3]{_{{#1}\;\!}{#2}_{\;{#3}}}
+\newcommand{\cifive}[5]{_{_{#1\,}{#2}\;\!}{#3}_{\,#4_{\,#5}}}
+
+\newcommand{\cirr}[3]{{#1}_{(#2, #3)}}
+
+
+%\newcommand{\tal}{{\textbf{\bf Tom's comment: }}}
+\newcommand{\tal}[1]{{\color{blue} \textbf{\bf Tom's comment: } #1}}
+\newcommand{\talc}{{\Blue{\bf Tom's comment: }}}
+\newcommand{\fbn}{\fbox{\bf Note} }
+\newcommand{\todo}{\fbox{\bf todo} }
+
+\newcommand{\bbib}{\begin{thebibliography}{99}}
+\newcommand{\ebib}{\end{thebibliography}}
+
+\newcommand{\blueline}{\BlueViolet{\rule{9in}{.05in}} }
+
+\newcommand{\mem}{\bc {\bf M E M O R A N D U M} \ec}
+
+\newcommand{\svb}{\savebox{0}}
+\newcommand{\fullrule}{\rule{6.5in}{.01in}}
+
+\newcommand{\nex}{\\[-4ex]}
+
+\newcommand{\minus}{_{^-}}
+
+\newcommand{\vfillit}{\vspace*{\fill}}
+\newcommand{\hfillit}{\hspace*{\fill}}
+
+%\newcommand{\url}[1]{{\small \tt {#1}}}
+%====================================================
+
+\newcommand{\tdt}[1]{\item \label{#1}}
+%\newcommand{\tdt}[1]{\item  {\bf Technical Detail {\{#1\}:}}}
+\newcommand{\stdt}[1]{See item~\ref{#1} in section~\ref{techappx} }
+\newcommand{\sstdt}[1]{see item~\ref{#1} in section~\ref{techappx} }
+\newcommand{\name}[1]{{\bf \{{#1}.pdf\}}}
+
+%%%%%%%%%%%%%%%%%%%%
+%newnotations
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\bg}{{\bf \boldmath g}}
+\newcommand{\bG}{{\bf \boldmath G}}
+\newcommand{\bft}{{\bf \boldmath t}}
+
+\newcommand{\rbarsel}{\bar{R}_k}
+\newcommand{\rhatsel}{\hat{R}_k}
+\newcommand{\pbarsel}{\bar{P}_k}
+\newcommand{\phatsel}{\hat{P}_k}
+
+
+\newcommand{\pialph}{\pi_k(\alpha)}
+\newcommand{\pigamma}{\pi_k(\gamma)}
+\newcommand{\gamk}{[\gamma K]}
+\newcommand{\gamkb}{\gamma K}
+\newcommand{\gamko}{\gamma (K+1)}
+\newcommand{\alphk}{[\alpha K]}
+\newcommand{\alphko}{\alpha (K+1)}
+\newcommand{\malphk}{[(1-\alpha)K]}
+\newcommand{\sab}{AB_k(\gamma, P_k, \pest)}
+\newcommand{\sba}{BA_k(\gamma, P_k, \pest)}
+\newcommand{\sabp}{ABP_k(\gamma)}
+\newcommand{\sbap}{BAP_k(\gamma)}
+\newcommand{\ralph}{\hat{R}_k(\alpha)}
+%\newcommand{\palph}{\hat{P}_k(\alpha)}
+\newcommand{\rest}{R^{est}_k}
+\newcommand{\pest}{P^{est}_k}
+\newcommand{\piknu}{\pi_{k \nu}}
+\newcommand{\pialphstar}{\pi_k(\alphastar)}
+
+
+\newcommand{\tilder}{\tilde{R}_k(\gamma)}
+\newcommand{\tildep}{\tilde{P}_k(\gamma)}
+\newcommand{\rtildestar}{\tilde{R}^\ast_k(\gamma)}
+\newcommand{\ptildestar}{\tilde{P}^\ast_k(\gamma)}
+\newcommand{\rhatstar}{\hat{R}^\ast_k(\gamma)}
+\newcommand{\phatstar}{\hat{P}^\ast_k(\gamma)}
+\newcommand{\rtildehat}{\hat{\tilde{R}}_k(\gamma)}
+\newcommand{\ptildehat}{\hat{\tilde{P}}_k(\gamma)}
+\newcommand{\rhat}{\hat{R}_k}
+\newcommand{\phat}{\hat{P}_k}
+\newcommand{\pdot}{\ddot{P}_k}
+\newcommand{\pdoty}{\ddot{P}_k(Y)}
+\newcommand{\pdottheta}{\ddot{P}_k(\hat \theta)}
+\newcommand{\rdot}{\ddot{R}_k}
+\newcommand{\phaty}{\hat P (Y)}
+\newcommand{\pstary}{P^*_\gamma (Y)}
+
+\newcommand{\pstar}{P^*_k(\gamma)}
+
+\newcommand{\rstar}{R^*_k(\gamma)}
+\newcommand{\pebam}{P_{ebam}}
+\newcommand{\tildere}{\tilde{R}_k(\gamma_e)}
+\newcommand{\tildepe}{\tilde{P}_k(\gamma_e)}
+\newcommand{\gammae}{\gamma_e}
+
+\newcommand{\pkl}{p_{k\ell}}
+
+\newcommand{\pr}{\mbox{pr}}
+\newcommand{\downup}{(above~$\gamma$)/(below~$\gamma$) }
+
+\newcommand{\fbr}{\fbox{Rongheng} }
+\newcommand{\fbt}{\fbox{Tom} }
+\newcommand{\fbs}{\fbox{Susan} }
+\newcommand{\fbg}{\fbox{Greg} }
+%\newcommand{\todo}{\fbox{TODO} }
+\newcommand{\comb}[2]{\left(\begin{array}{c}#1\\#2\end{array}\right)}
+
+\newcommand{\comment}[1]{}
+
+\newcommand{\tstar}{t^*}
+\newcommand{\thetak}{\theta_k}
+\newcommand{\thetank}{\btheta^{(-k)}}
+\newcommand{\thetagk}{\theta_{(\gamma)}}
+\newcommand{\thetagnk}{\theta_{(\gamma)}^{(-k)}}
+\newcommand{\thetaik}{\theta_{(i,K)}}
+\newcommand{\thetaiko}{\theta_{(i,K-1)}}
+\newcommand{\thetaiok}{\theta_{(i-1,K)}}
+\newcommand{\thetaioko}{\theta_{(i-1,K-1)}}
+%\newcommand{\thetaikv}[2]{\theta_{(#1),(#2)}}
+\newcommand{\E}{\mbox{E}}
+\newcommand{\bYk}{\bold{Y_K}}
+
+\newcommand{\pbar}{\bar{P}_k}
+
+\newcommand{\rmem}{ \em}
+\newcommand{\rco}{{\bf R^{co_2}}}
+\newcommand{\rcok}{ R^{co_2}_k}
+
+\newcommand{\rcom}{{\bf R^{co_m}}}
+\newcommand{\rcomk}{ R^{co_m}_k}
+\newcommand{\siggenes}{{\em siggenes }}
+\def\u#1#2{u_{#1}^{(#2)}}
+%\def\pr{\mbox{Pr}}
+%those notations from usrds manuscript have been included.
+%those notations from jasa manuscript have been included.
+\newcommand{\Var}{\mbox{Var}}
+
+
+%===============================

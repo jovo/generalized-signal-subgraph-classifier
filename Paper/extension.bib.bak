@@ -1,0 +1,49 @@
+% This file was created with JabRef 2.5.
+% Encoding: MacRoman
+
+@ARTICLE{brown,
+  author = {Brown, M.B. and Forsythe, A.B.},
+  title = {Robust tests for the equality of variances},
+  journal = {Journal of the American Statistical Association},
+  year = {1974},
+  pages = {364--367},
+  publisher = {JSTOR}
+}
+
+@ARTICLE{kkolsmir,
+  author = {Kiefer, J.},
+  title = {K-sample analogues of the Kolmogorov-Smirnov and Cramer-v. Mises
+	tests},
+  journal = {The Annals of Mathematical Statistics},
+  year = {1959},
+  pages = {420--447},
+  publisher = {JSTOR}
+}
+
+@ARTICLE{levene,
+  author = {Levene, H.},
+  title = {Robust tests for equality of variances},
+  journal = {Contributions to probability and statistics},
+  year = {1960},
+  volume = {1},
+  pages = {278--292},
+  publisher = {Stanford University Press Palo Alto, Calif:}
+}
+
+@ARTICLE{nonparvar,
+  author = {Wright, J.H.},
+  title = {Alternative variance-ratio tests using ranks and signs},
+  journal = {Journal of Business \& Economic Statistics},
+  year = {2000},
+  pages = {1--9},
+  publisher = {JSTOR}
+}
+
+@comment{jabref-meta: selector_journal:}
+
+@comment{jabref-meta: selector_author:}
+
+@comment{jabref-meta: selector_keywords:}
+
+@comment{jabref-meta: selector_publisher:}
+

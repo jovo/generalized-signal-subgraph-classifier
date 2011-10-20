@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\begin{document}
+\pagestyle{empty}
+% Define block styles
+\tikzstyle{bblock} = [rectangle, draw, text width=14em, text centered, minimum height=5em]
+\tikzstyle{line} = [draw]
+\tikzstyle{block} = [rectangle, draw, text width=6em, text centered, minimum height=2em]    
+\begin{tikzpicture}[node distance = 5cm, auto]
+% Place nodes
+\node [bblock] (top) {\textbf{Signal Subgraph}};
+\node [bblock, below of=top, left of=top, node distance = 10cm] (pval) {\textbf{Estimation of p-value for edges for signal subgraph} };
+\node [bblock, below of=top, right of=top, node distance = 10cm] (prob) {\textbf{Calculate probability of an edge}};
+\node [block, below of=pval, left of=pval] (pbin) {Binary / Categorical};
+\node [block, right of=pbin] (pw) {Weighted};
+\node [block, below of=pbin, left of=pbin] (ppbin) {Parametric (P)};
+\node [block, right of=ppbin] (nppbin) {Non-Parametric (NP)};
+\node [block, right of=nppbin] (ppw) {P};
+\node [block, right of=ppw] (nppw) {NP};
+\node [block, below of=ppbin] (pchi2) {$\chi^2$};
+\node [block, below of=nppbin] (pfish) {Fisher's Exact Test};
+\node [block, below of=ppw] (panova) {ANOVA};
+\node [block, below of=nppw] (pkw) {Kruskal-Wallis Test};
+
+\node [block, below of=prob] (prc) {GLMs};
+\node [block, left of=prc] (prb) {Non-Parametric};
+\node [block, right of=prc] (prd) {Machine Learning};
+
+\node [block, below of=prb, left of=prc] (prss) {Signal Subgraph};
+\node [block, left of=prss] (prws) {Whole Graph};
+\node [block, below of=prws] (prww) {(1-pval) Weight edges};
+
+\node [block, right of=prww] (prbm) {Multinomial Distribution (Multicat)};
+\node [block, right of=prbm] (prbb) {Bernoulli Distribution (Binary)};
+\node [block, right of=prbm] (prbm) {};
+\node [block, right of=prbm] (prcm) {Multinomial Distribution};
+\node [block, right of=prcm] (prdm) {Pois/Norm/Exp};
+
+
+%\node [block, left of=90day] (30day) {\textbf{30 Day Follow-Up} (n= 136)};
+%\node [block, right of=180day] (270day) {\textbf{270 Day Follow-Up} (n= 62)};
+%\node [block, right of=270day] (365day) {\textbf{365 Day Follow-Up} (n= 38)};
+%\node [below of=30day, node distance = 1cm] (footnote) {\scriptsize Follow-Up occurances are recorded visits of living subjects};
+% Draw edges
+%\path [line] (top) -- (pval);
+%\path [line] (top) -- (prob);
+%\path [line] (top) -- (prob);
+%\path [line] (prob) -- (30day);
+%\path [line] (top) -- (90day);
+%\path [line] (top) -- (180day);
+%\path [line] (top) -- (270day);
+%\path [line] (top) -- (365day);
+\end{tikzpicture}
+\end{document}
