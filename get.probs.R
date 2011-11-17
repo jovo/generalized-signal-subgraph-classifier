@@ -1,6 +1,7 @@
 	
 get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj){
 	if (weight){
+	print("Code chunk 1, weight Probs")	
 			## Proportion matrices for each group
 			## Each column is a different group
 			v.mat <- sd.mat <- m.mat <- matrix(nrow=nkeep, ncol=ngroups)
@@ -11,7 +12,7 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 				## get indicator if each person is in that group
 				ingroup <- ylabels == ilev
 				# priors = P(Y = y)
-				priors[ig] <- mean(ingroup)
+				priors[ig] <- mean(ingroup, na.rm=TRUE)
 				## Subset the graphs to only that group
 				sset <- graph[ingroup,]
 				## get the mean of the adjacency
@@ -20,13 +21,15 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 				sd.mat[, ig] <- apply(sset, 2, sd)
 				v.mat[, ig] <- apply(sset, 2, var)
 			}
-		
+		print("Code chunk 1 Probs")
 		#getprob <- function(graph, priors) {
 			# probs 
 			probs <- matrix(nrow=nsubj, ncol=ngroups)
 			colnames(probs) <- levs
 			
 			if (corr==FALSE) {
+				print("Code chunk 2 Probs")
+
 				for (ig in 1:ngroups){
 					ps <- matrix(nrow=nsubj, ncol=nkeep)
 					for (ikeep in 1:nkeep){
@@ -36,6 +39,8 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 					probs[, ig] <- apply(ps, 1, prod)*priors[ig]
 				}
 			} else {
+				print("Code chunk 2 Probs")
+
 				#xbar - sample mean
 				#v - sample variance (divided by n not n-1)
 				# alpha = xbar(xbar(1-xbar)/v - 1)
@@ -57,6 +62,7 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 			}
 		} else {
 
+		print("Code chunk 1, Binary Probs")	
 	
 		##########Get Binary Probabilities############
 	
@@ -70,14 +76,16 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 			## get indicator if each person is in that group
 			ingroup <- ylabels == ilev
 			# priors = P(Y = y)
-			table
-			priors[ig] <- mean(ingroup)
+			# table
+			priors[ig] <- mean(ingroup, na.rm=TRUE)
 			## Subset the graphs to only that group
 			sset <- graph[ingroup,]
 			## get the mean of the adjacency
 			## p.mat <- p_{u,v | Y = y}
 			p.mat[, ig] <- colMeans(sset)
 		}
+
+		print("Code chunk 2, Binary Probs")	
 	
 		### Can't be probaability = 1 or 0 since dbinom will give 0
 		### if htis occurs - may be a good thing - since these may be diagnostic 
@@ -86,7 +94,10 @@ get.probs <- function(graph, weight, corr, ngroups, ylabels, levs, nkeep, nsubj)
 	
 		# probs 
 		probs <- matrix(nrow=nsubj, ncol=ngroups)
-		colnames(probs) <- levs
+		print(levs)
+		print(head(probs))
+		#colnames(probs) <- levs
+		print("Code chunk 3, Binary Probs")	
 		
 		for (ig in 1:ngroups){
 				ps <- log(dbinom(graph, 1, prob=p.mat[,ig]))

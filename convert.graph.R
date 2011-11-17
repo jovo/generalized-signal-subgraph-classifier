@@ -25,7 +25,7 @@ convert.graph <- function(graph){
 		ng <- colnames(graph)
 		classes <- unique(sapply(ng, function(x) class(graph[,x])))
 		if (!all(classes %in% c("numeric", "logical", "integer"))) stop("Some Column has wrong class")
-		graph <- as.matrix(graph[, ng[!ng %in% "ylabels"]])
+		graph <- as.matrix(graph[, ng[!ng %in% "y"]])
 	}
 	## Last option is data is matrix
 	return(graph)
@@ -34,16 +34,17 @@ convert.graph <- function(graph){
 
 
 
-getpvals <- function(x, ylabels, workspace, weight, ...){
+getpvals <- function(x, y, workspace, weight, ...){
 	if (weight){
 		## Kruskal - Wallis test for pvals for weighted
-		return(kruskal.test(x=x, g=ylabels, ...)$p.value)
+		return(kruskal.test(x=x, g=y, ...)$p.value)
 	} else {
 		tab <- table(x, ylabels)
 		expected <- rowSums(tab) %*% t(colSums(tab))/sum(tab)
 		if (all(expected > 5) && (nrow(tab) > 2 || ncol(tab) > 2)) {
-			return(chisq.test(x=x, y=ylabels)$p.value)
-		} else return(fisher.test(x=x, y=ylabels, alternative=alternative, conf.int = FALSE)$p.value)
+			return(chisq.test(x=x, y=y)$p.value)
+			### stopped here
+		} else return(fisher.test(x=x, y=y, alternative=alternative, conf.int = FALSE, workspace=workspace)$p.value)
 	}	
 
 	

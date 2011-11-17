@@ -1,112 +1,69 @@
 	
-get.probs <- function(graph, family, weight, corr, ngroups, ylabels, levs, nkeep, nsubj){
+get.probs.formula <- function(graph, x=NULL, y, family=NULL, weight=FALSE, ngroups, levs, nkeep, nsubj, corr=FALSE){
 	# if is.null(family)
 	
+ 	eta <- 1/(10*nsubj)
+	library(MASS)
+	if (!weight & is.null(x)) family <- binomial()
+	if (weight & is.null(x)) family <- gaussian()
+	# if (weight & is.null(x) & corr=TRUE) family <- beta()
+	
 	if (weight){
-	print("Code chunk 1, weight Probs")	
-			## Proportion matrices for each group
-			## Each column is a different group
-			v.mat <- sd.mat <- m.mat <- matrix(nrow=nkeep, ncol=ngroups)
-			priors <- rep(NA, length=ngroups)	
-			for (ig in 1:ngroups){
-				## grab the level of ylabels
-				ilev <- levs[ig]
-				## get indicator if each person is in that group
-				ingroup <- ylabels == ilev
-				# priors = P(Y = y)
-				priors[ig] <- mean(ingroup, na.rm=TRUE)
-				## Subset the graphs to only that group
-				sset <- graph[ingroup,]
-				## get the mean of the adjacency
-				## p.mat <- p_{u,v | Y = y}
-				m.mat[, ig] <- apply(sset, 2, mean)
-				sd.mat[, ig] <- apply(sset, 2, sd)
-				v.mat[, ig] <- apply(sset, 2, var)
-			}
-		print("Code chunk 1 Probs")
-		#getprob <- function(graph, priors) {
-			# probs 
-			probs <- matrix(nrow=nsubj, ncol=ngroups)
-			colnames(probs) <- levs
-			
-			if (corr==FALSE) {
-				print("Code chunk 2 Probs")
-
-				for (ig in 1:ngroups){
-					ps <- matrix(nrow=nsubj, ncol=nkeep)
-					for (ikeep in 1:nkeep){
-						#ps is the probability given the mean/sd of each group
-						ps[, ikeep] <- dnorm(graph[, ikeep], mean=m.mat[ikeep,ig], sd=sd.mat[ikeep,ig])
-					}
-					probs[, ig] <- apply(ps, 1, prod)*priors[ig]
-				}
-			} else {
-				print("Code chunk 2 Probs")
-
-				#xbar - sample mean
-				#v - sample variance (divided by n not n-1)
-				# alpha = xbar(xbar(1-xbar)/v - 1)
-				# beta = (1-xbar)(xbar(1-xbar)/v - 1)
-				# if in (L, H) xbar = (xbar-L)/(H-L), v = v/(H-L)^2
-				# if in (-1, 1) xbar = (xbar +1)/2, v = v/4
-				vars <- (v.mat*(nsubj-1)/nsubj)
-				xv <- m.mat*(1-m.mat)/vars - 1
-				alpha <- m.mat*xv
-				beta <- (1-m.mat)*xv
-				for (ig in 1:ngroups){
-					ps <- matrix(nrow=nsubj, ncol=nkeep)
-					for (ikeep in 1:nkeep){
-						#ps is the probability given the mean/sd of each group
-						ps[, ikeep] <- dbeta(graph[, ikeep], shape1=alpha[ikeep,ig], shape2=beta[ikeep,ig])
-					}
-					probs[, ig] <- apply(ps, 1, prod)*priors[ig]
-				}		
-			}
-		} else {
-
-		print("Code chunk 1, Binary Probs")	
-	
-		##########Get Binary Probabilities############
-	
-		## Proportion matrices for each group
-		## Each column is a different group
-		p.mat <- matrix(nrow=nkeep, ncol=ngroups)
-		priors <- rep(NA, length=ngroups)	
+		strfam <- as.character(family$family)
+		if (strfam == "gaussian") dens <- "norm"
+		if (strfam %in% c("pois", "quasipoisson")) dens <- "pois"
+		if (strfam == "binomial") dens <- "binom"
+		if (strfam == "Gamma") dens <- "gamma"
+		if (strfam == "inverse.gaussian") stop("IG not implemented yet")	
+		if (strfam == "multinom") dens <- "multinom"
+		if (strfam == "beta") dens <- "beta"
+		
+		all.probs <- matrix(nrow=nsubj, ncol=ngroups)
+		colnames(all.probs) <- levs
 		for (ig in 1:ngroups){
+			
 			## grab the level of ylabels
 			ilev <- levs[ig]
-			## get indicator if each person is in that group
-			ingroup <- ylabels == ilev
-			# priors = P(Y = y)
-			# table
-			priors[ig] <- mean(ingroup, na.rm=TRUE)
-			## Subset the graphs to only that group
-			sset <- graph[ingroup,]
-			## get the mean of the adjacency
-			## p.mat <- p_{u,v | Y = y}
-			p.mat[, ig] <- colMeans(sset)
-		}
+			ingroup <- y == ilev
+			ingroup[is.na(ingroup)] <- FALSE
+			col.probs <- matrix(nrow=nsubj, ncol=ncol(graph))
+			for (icol in 1:ncol(graph)){
+				run.data <- data.frame(cbind(G=graph[, icol], x))
+				### stopped here
+				mod <- glm(G ~ ., family=family, data=run.data, subset=ingroup)
+				### now using the 
+				### Get Ghat  and get parameter estimates from it
+				## For Gamma variance/mean = 1/Beta
+				if (dens != "multinom") Ghat <- predict(mod, newdata=run.data[ingroup,])
+				if (dens == "pois") {
+					lambda <- mean(Ghat)
+					probs <- dpois(graph, lambda=lambda)
+				}
+				if (dens == "binom") {
+					phat <- mean(Ghat)
+					probs <- dbinom(graph, size=1,  prob=phat)
+				}
+				if (dens == "norm") {
+					m <- mean(Ghat)
+					sds <- sd(Ghat)
+					probs <- dnorm(graph, m, sd=sds)
+				}
+				if (dens == "gamma") {
+					ests <- fitdistr(Ghat, "gamma")
+					ests <- ests$estimate
+					probs <- dgamma(graph, shape = ests["shape"], rate = ests["rate"])
+				}
+				if (dens %in% c("beta", "multinom")) {
+					stop("Not Implemented yet for this family")
+				}
+				col.probs[, icol] <- probs
 
-		print("Code chunk 2, Binary Probs")	
-	
-		### Can't be probaability = 1 or 0 since dbinom will give 0
-		### if htis occurs - may be a good thing - since these may be diagnostic 
-		p.mat[p.mat == 1] <- 0.99
-		p.mat[p.mat == 0] <- 0.01
-	
-		# probs 
-		probs <- matrix(nrow=nsubj, ncol=ngroups)
-		print(levs)
-		print(probs)
-		colnames(probs) <- levs
-		print("Code chunk 3, Binary Probs")	
-		
-		for (ig in 1:ngroups){
-				ps <- log(dbinom(graph, 1, prob=p.mat[,ig]))
-				probs[, ig] <- exp(apply(ps, 1, sum))*priors[ig]
+				###need to implement for beta
+			}		
+			col.probs <- apply(col.probs, 1, prod)
+			col.probs <- ifelse(col.probs==1, 1-eta, ifelse(col.probs < .Machine$double.eps, eta, col.probs))
+			all.probs[, ig] <- col.probs
 		}
-		
 	}
-
-return(list(probs=probs, priors=priors))
+return(list(probs=all.probs))
 }
